@@ -1,0 +1,40 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+button{
+  cursor: pointer;
+  padding: 10px 15px;
+  margin: 20px;
+  border-radius: 6px;
+  
+  border: none;
+  outline: none;
+  font-size: medium;
+}
+.suc{
+  background-color: green;
+}
+.fai{
+  background-color: red;
+}
+.inc{
+  background-color: blue;
+}
+.dec{
+  background-color: orange;
+}
+.suc:hover{
+  background-color: rgb(0, 94, 0);
+}
+.fai:hover{
+  background-color: rgb(214, 0, 0);
+}
+.inc:hover{
+  background-color: rgb(2, 2, 221);
+}
+.dec:hover{
+  background-color: rgb(226, 148, 2);
+}
