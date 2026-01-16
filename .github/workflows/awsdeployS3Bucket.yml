@@ -43,4 +43,4 @@ jobs:
         fi
         
       
-      # aws s3 sync dist/ s3://${{ secrets.AWS_S3_BUCKET }} --delete
+  
