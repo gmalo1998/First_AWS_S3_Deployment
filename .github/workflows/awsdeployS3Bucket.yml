@@ -1,9 +1,17 @@
-name: Upload Website
+name: Upload Website using AWS S3 Bucket blue/green deployment
 
 on:
-  push:
-    branches:
-    - main
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Select deployment target (blue or green)'
+        required: true
+        default: 'blue'
+        type: choice
+        options:
+          - blue
+          - green
+   
 
 jobs:
   deploy:
@@ -28,4 +36,12 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: 'us-west-1'   # optional1: defaults to us-east-1
     - name: Deploy to S3
-      run: aws s3 sync dist/ s3://${{ secrets.AWS_S3_BUCKET }} --delete
+      run: | 
+        if[
+        "${{github.event.input.target}}"="green"];
+        then aws s3 sync dist/ s3://${{ secrets.AWS_S3_BUCKET_BLUE }} --delete;
+        else aws s3 sync dist/ s3://${{ secrets.AWS_S3_BUCKET_GREEN }} --delete;
+        fi
+        
+      
+      # aws s3 sync dist/ s3://${{ secrets.AWS_S3_BUCKET }} --delete
