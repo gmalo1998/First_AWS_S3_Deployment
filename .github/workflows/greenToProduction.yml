@@ -13,21 +13,25 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1   # CloudFront is global
+          aws-region: us-east-1
 
       - name: Switch CloudFront origin to GREEN
         run: |
           aws cloudfront get-distribution-config \
             --id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --query 'DistributionConfig' \
             > dist-config.json
 
-          ETAG=$(jq -r '.ETag' dist-config.json)
+          ETAG=$(aws cloudfront get-distribution-config \
+            --id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --query 'ETag' \
+            --output text)
 
           jq '
-            .DistributionConfig.DefaultCacheBehavior.TargetOriginId="green-origin"
+            .DefaultCacheBehavior.TargetOriginId = "green-origin"
           ' dist-config.json > updated-config.json
 
           aws cloudfront update-distribution \
             --id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
-            --if-match $ETAG \
+            --if-match "$ETAG" \
             --distribution-config file://updated-config.json
