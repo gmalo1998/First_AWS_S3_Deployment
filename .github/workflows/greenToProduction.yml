@@ -28,7 +28,7 @@ jobs:
             --output text)
 
           jq '
-            .DefaultCacheBehavior.TargetOriginId = "green-origin"
+            .DefaultCacheBehavior.TargetOriginId = "react-green-bucket.s3.us-west-1.amazonaws.com"
           ' dist-config.json > updated-config.json
 
           aws cloudfront update-distribution \
