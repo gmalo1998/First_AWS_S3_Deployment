@@ -38,7 +38,8 @@ jobs:
     - name: Deploy to S3
       run: | 
         if[
-        "${{github.event.input.target}}"="green"];
+        "${{github.event.input.target}}"="blue"
+        ];
         then aws s3 sync dist/ s3://${{ secrets.AWS_S3_BUCKET_BLUE }} --delete;
         else aws s3 sync dist/ s3://${{ secrets.AWS_S3_BUCKET_GREEN }} --delete;
         fi
